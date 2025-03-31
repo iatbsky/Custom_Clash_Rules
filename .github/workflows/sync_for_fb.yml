@@ -22,8 +22,8 @@ jobs:
           # 复制文件
           cp cfg/Custom_Clash_Full.ini cfg/Custom_Clash_Full_fb.ini
 
-          # 在所有 "节点`url-test`" 字样 之后添加 "^(?!.*V4)"
-          sed -i 's/节点`url-test`/节点`url-test`^(?!.*V4)/g' cfg/Custom_Clash_Full_fb.ini
+          # 在所有 "节点`url-test`" 字样 之后添加 "(^(?!.*V4).*)"
+          sed -i 's/节点`url-test`/节点`url-test`(^(?!.*V4).*)/g' cfg/Custom_Clash_Full_fb.ini
           
           # 添加节点分组
           sed -i '/custom_proxy_group=🐟 漏网之鱼/a custom_proxy_group=🎮 游戏加速`select`(V4|V3)' cfg/Custom_Clash_Full_fb.ini
