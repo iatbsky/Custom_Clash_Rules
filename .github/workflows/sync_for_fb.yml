@@ -26,7 +26,7 @@ jobs:
           sed -i 's/节点`url-test`/节点`url-test`^(?!.*V4)/g' cfg/Custom_Clash_Full_fb.ini
           
           # 添加节点分组
-          sed -i '/custom_proxy_group=🐟 漏网之鱼/a custom_proxy_group=🎮 游戏加速`select`(V4|V3) cfg/Custom_Clash_Full_fb.ini
+          sed -i '/custom_proxy_group=🐟 漏网之鱼/a custom_proxy_group=🎮 游戏加速`select`(V4|V3)' cfg/Custom_Clash_Full_fb.ini
           
       # Step 3: 提交更改到仓库
       - name: Commit and Push Changes
