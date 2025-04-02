@@ -1,4 +1,4 @@
-name: Sync and Modify Custom_Clash.ini for fb
+name: Modify Custom_Clash.ini for fb
 
 on:
   push:
