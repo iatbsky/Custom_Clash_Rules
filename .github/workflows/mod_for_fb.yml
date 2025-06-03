@@ -1,0 +1,51 @@
+name: Modify for fb
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - cfg/*.ini # 当任何ini文件更新时触发
+  workflow_dispatch: # 添加手动触发事件
+
+jobs:
+  sync-and-modify:
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: 检出源仓库
+      - name: Checkout Source Repo
+        uses: actions/checkout@v3
+
+      # Step 2: 修改文件
+      - name: Modify Files
+        run: |
+          # 找到cfg目录下所有的ini文件
+          for ini_file in cfg/*.ini; do
+            # 获取文件名（不包含路径）
+            filename=$(basename "$ini_file")
+            
+            # 跳过已经在fb子目录中的文件
+            if [[ $ini_file == *"fb/"* ]]; then
+              continue
+            fi
+            
+            # 复制文件到fb目录，保持原文件名
+            cp "$ini_file" "cfg/fb/$filename"
+
+            # 在所有 "节点`url-test`" 字样 之后添加 "(^(?!.*V4).*)"
+            sed -i 's/节点`url-test`/节点`url-test`(^(?!.*V4).*)/g' "cfg/fb/$filename"
+            
+            # 添加节点分组
+            sed -i '/custom_proxy_group=🐟 漏网之鱼/a custom_proxy_group=🎮 游戏加速`select`(V4|V3)' "cfg/fb/$filename"
+            
+            echo "已处理文件: cfg/fb/$filename"
+          done
+          
+      # Step 3: 提交更改到仓库
+      - name: Commit and Push Changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add cfg/fb/*.ini
+          git commit -m "Update all files in cfg/fb/" -a || echo "No changes to commit"
+          git push
